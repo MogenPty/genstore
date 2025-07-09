@@ -1,6 +1,6 @@
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
-import type { Category } from "@/payload-types";
+import { type Category } from "@/payload-types";
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
 import { SearchFilters } from "./search-filters";
@@ -23,19 +23,16 @@ export default async function Layout({ children }: Props) {
         exists: false,
       },
     },
+    sort: "name",
   });
 
   const formattedData = data.docs.map((category: Category) => ({
     ...category,
-    subcategories: (category.subcategories?.docs ?? []).map(
-      (subcategory: Category) => ({
-        ...subcategory,
-        subcategories: undefined,
-      })
-    ),
+    subcategories: (category.subcategories?.docs ?? []).map((subcategory) => ({
+      ...(subcategory as Category),
+      subcategories: undefined,
+    })),
   }));
-
-  console.log(formattedData);
 
   return (
     <div className="flex flex-col min-h-screen">
