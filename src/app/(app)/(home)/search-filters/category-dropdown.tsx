@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/payload-types";
@@ -29,6 +31,12 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
     setIsOpen(false);
   };
 
+  const toggleDropdown = () => {
+    if (category.subcategories?.docs?.length) {
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
     <div
@@ -36,16 +44,23 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
       ref={categoryRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={toggleDropdown}
     >
       <div className="relative">
         <Button
           variant="elevated"
           className={cn(
             "h-11 px-4 bg-transparent border-transparent hover:bg-primary hover:border-primary hover:text-primary-foreground text-secondary-foreground",
-            isActive && !isHovered && "bg-primary text-primary-foreground"
+            isActive && !isHovered && "bg-primary text-primary-foreground",
+            isOpen && "bg-primary text-primary-foreground"
           )}
         >
-          {category.name}
+          <Link
+            key={category.id}
+            href={`/${category.slug === "all" ? "" : category.slug}`}
+          >
+            {category.name}
+          </Link>
         </Button>
         {category.subcategories && category.subcategories.length > 0 && (
           <div
