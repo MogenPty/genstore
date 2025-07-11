@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { CategoryOutput } from "@/modules/categories/types";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/payload-types";
+
 import { SubcategoryMenu } from "./subcategory-menu";
 import { useDropdownPosition } from "./use-dropdown-position";
 
 interface Props {
-  category: Category;
+  category: CategoryOutput;
   isActive: boolean;
   isHovered: boolean;
 }
@@ -32,7 +33,7 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
   };
 
   const toggleDropdown = () => {
-    if (category.subcategories?.docs?.length) {
+    if (category.subcategories?.length) {
       setIsOpen(!isOpen);
     }
   };

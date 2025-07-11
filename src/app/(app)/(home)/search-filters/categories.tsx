@@ -1,17 +1,18 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: false positive */
 "use client";
 
-import { vi } from "date-fns/locale";
 import { ListFilterIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
 import { Button } from "@/components/ui/button";
+import { CategoryOutput } from "@/modules/categories/types";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/payload-types";
-import { CategoryDropdown } from "./category-dropdown";
+
 import { CategoriesSidebar } from "./categories-sidebar";
+import { CategoryDropdown } from "./category-dropdown";
 
 interface Props {
-  data: Category[]; // Define the type based on your data structure
+  data: CategoryOutput[]; // Define the type based on your data structure
 }
 
 export const Categories = ({ data }: Props) => {
@@ -23,7 +24,7 @@ export const Categories = ({ data }: Props) => {
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const activeCategory = "software-development"; // Replace with your logic to get the active category
+  const activeCategory = "all"; // Replace with your logic to get the active category
   const activeCategoryIndex = data.findIndex(
     (category) => category.slug === activeCategory
   );
@@ -69,11 +70,7 @@ export const Categories = ({ data }: Props) => {
 
   return (
     <div className="relative w-full">
-      <CategoriesSidebar
-        data={data}
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
       {/* Hidden container for measuring widths */}
       <div
@@ -81,7 +78,7 @@ export const Categories = ({ data }: Props) => {
         style={{ position: "fixed", left: -9999, top: -9999 }}
         ref={measureRef}
       >
-        {data.map((category: Category) => (
+        {data.map((category) => (
           <div key={category.id}>
             <CategoryDropdown
               category={category}
@@ -99,7 +96,7 @@ export const Categories = ({ data }: Props) => {
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >
-        {data.slice(0, visibleCount).map((category: Category) => (
+        {data.slice(0, visibleCount).map((category: CategoryOutput) => (
           <div key={category.id}>
             <CategoryDropdown
               category={category}

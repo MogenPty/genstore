@@ -1,6 +1,3 @@
-import { type Category } from "@/payload-types";
-
-import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -11,29 +8,32 @@ import {
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { se } from "date-fns/locale";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { CategoryOutput } from "@/modules/categories/types";
 
 interface Props {
-  data: Category[]; // Define the type based on your data structure
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export const CategoriesSidebar = ({ data, open, onOpenChange }: Props) => {
-  const [parentCategories, setParentCategories] = useState<Category[] | null>(
-    null
-  );
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  );
+export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
+  const trpc = useTRPC();
+  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+
+  const [parentCategories, setParentCategories] = useState<
+    CategoryOutput[] | null
+  >(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryOutput | null>(null);
 
   const currentCategory = parentCategories ?? data ?? [];
 
   const router = useRouter();
 
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = (category: CategoryOutput) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories as Category[]);
+      setParentCategories(category.subcategories as CategoryOutput[]);
       setSelectedCategory(category);
     } else {
       if (parentCategories && selectedCategory)
