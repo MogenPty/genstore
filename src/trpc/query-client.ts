@@ -2,7 +2,7 @@ import {
   defaultShouldDehydrateQuery,
   QueryClient,
 } from "@tanstack/react-query";
-// import { superjson } from "superjson";
+import superjson from "superjson";
 
 export function makeQueryClient() {
   return new QueryClient({
@@ -11,7 +11,7 @@ export function makeQueryClient() {
         staleTime: 1000 * 30,
       },
       dehydrate: {
-        // serializeData: superjson.serialize,
+        serializeData: superjson.serialize,
         shouldDehydrateQuery: (query) => {
           // Only dehydrate queries that are not in the cache
           return (
@@ -21,7 +21,7 @@ export function makeQueryClient() {
         },
       },
       hydrate: {
-        // deserializeData: superjson.deserialize,
+        deserializeData: superjson.deserialize,
       },
     },
   });
