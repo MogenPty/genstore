@@ -3,7 +3,7 @@ import { appRouter } from "@/trpc/routers/_app";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 const handler = (req: Request) => {
-  fetchRequestHandler({
+  return fetchRequestHandler({
     req,
     endpoint: "/api/trpc",
     router: appRouter,

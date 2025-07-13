@@ -82,13 +82,17 @@ export const Navbar = () => {
           asChild
           className="border-l border-r-0 border-t-0 border-b-0 px-12 h-full rounded-none bg-white hover:bg-secondary text-primary transition-colors text-lg"
         >
-          <Link href="/sign-in">Login</Link>
+          <Link prefetch href="/sign-in">
+            Login
+          </Link>
         </Button>
         <Button
           asChild
           className="border-l border-r-0 border-t-0 border-b-0 px-12 h-full rounded-none bg-primary hover:bg-secondary text-white hover:text-primary transition-colors text-lg"
         >
-          <Link href="/sign-up">Sign Up</Link>
+          <Link prefetch href="/sign-up">
+            Start Selling
+          </Link>
         </Button>
       </div>
 
