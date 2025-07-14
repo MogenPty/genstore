@@ -22,6 +22,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Categories, Media],
+  cookiePrefix: "genstore", //default value is "payload"
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
