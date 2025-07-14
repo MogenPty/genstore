@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { Poppins } from "next/font/google";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -22,8 +24,6 @@ import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/client";
 
 import { registerSchema } from "../../schemas";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,13 +33,15 @@ const poppins = Poppins({
 export const SignUpView = () => {
   const trpc = useTRPC();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const register = useMutation(
     trpc.auth.register.mutationOptions({
       onError: (error) => {
         toast.error(error.message || "Registration failed");
       },
-      onSuccess: () => {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
         router.push("/");
       },
     })
