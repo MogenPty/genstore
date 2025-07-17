@@ -1,3 +1,9 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { CategoryOutput } from "@/modules/categories/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -5,12 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { CategoryOutput } from "@/modules/categories/types";
 
 interface Props {
   open?: boolean;
@@ -33,7 +34,9 @@ export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
 
   const handleCategoryClick = (category: CategoryOutput) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories as CategoryOutput[]);
+      setParentCategories(
+        category.subcategories as unknown as CategoryOutput[]
+      );
       setSelectedCategory(category);
     } else {
       if (parentCategories && selectedCategory)
