@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 
-import { NavbarSidebar } from "./navbar-sidebar";
+import { NavbarSidebar } from "@/modules/home/ui/components/navbar-sidebar";
 
 const poppins = Poppins({
   subsets: ["latin"],

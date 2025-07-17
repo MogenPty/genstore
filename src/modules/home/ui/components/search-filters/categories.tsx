@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoryDropdown } from "./category-dropdown";
+import { useParams } from "next/navigation";
 
 interface Props {
   data: CategoryOutput[]; // Define the type based on your data structure
@@ -24,7 +25,11 @@ export const Categories = ({ data }: Props) => {
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const activeCategory = "all"; // Replace with your logic to get the active category
+  const params = useParams();
+  const categoryParam = params.category as string | undefined;
+
+  const activeCategory = categoryParam || "all"; // Replace with your logic to get the active category
+
   const activeCategoryIndex = data.findIndex(
     (category) => category.slug === activeCategory
   );
