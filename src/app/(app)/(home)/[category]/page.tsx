@@ -2,6 +2,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 import { getQueryClient, trpc } from "@/trpc/server";
+import { ProductFilters } from "@/modules/products/ui/components/product-filters";
 import {
   ProductList,
   ProductListSkeleton,
@@ -23,15 +24,20 @@ const Page = async ({ params }: Props) => {
   );
 
   return (
-    <div className="flex items-center justify-center h-full">
-      <h1 className="text-2xl font-bold">Category Page: {category}</h1>
-      <br />
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList category={category} />
-        </Suspense>
-      </HydrationBoundary>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="px-4 py-8 lg:px-12 flex flex-col gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-8 gap-x-12 gap-y-6">
+          <div className="lg:col-span-2">
+            <ProductFilters />
+          </div>
+          <div className="lg:col-span-4 xl:col-span-6">
+            <Suspense fallback={<ProductListSkeleton />}>
+              <ProductList category={category} />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </HydrationBoundary>
   );
 };
 
