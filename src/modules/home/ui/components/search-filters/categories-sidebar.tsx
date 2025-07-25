@@ -34,9 +34,7 @@ export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
 
   const handleCategoryClick = (category: CategoryOutput) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(
-        category.subcategories as unknown as CategoryOutput[]
-      );
+      setParentCategories(category.subcategories as CategoryOutput[]);
       setSelectedCategory(category);
     } else {
       if (parentCategories && selectedCategory)

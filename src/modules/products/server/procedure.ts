@@ -9,10 +9,25 @@ export const productsRouter = createTRPCRouter({
     .input(
       z.object({
         category: z.string().nullable().optional(),
+        minPrice: z.string().nullable().optional(),
+        maxPrice: z.string().nullable().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
       const where: Where = {};
+
+      if (input.minPrice) {
+        where.price = {
+          greater_than_equal: parseFloat(input.minPrice),
+        };
+      }
+
+      if (input.maxPrice) {
+        where.price = {
+          ...where.price,
+          less_than_equal: parseFloat(input.maxPrice),
+        };
+      }
 
       if (input.category) {
         const categoryData = await ctx.payload.find({
@@ -23,23 +38,23 @@ export const productsRouter = createTRPCRouter({
           where: { slug: { equals: input.category } },
         });
 
-        const formattedData = categoryData.docs.map((category) => ({
-          ...category,
-          subcategories: (category.subcategories?.docs ?? []).map(
-            (subcategory) => ({
-              ...(subcategory as Category),
-              subcategories: undefined,
-            })
-          ),
-        }));
+        if (categoryData) {
+          const formattedData = categoryData.docs.map((category) => ({
+            ...category,
+            subcategories: (category.subcategories?.docs ?? []).map(
+              (subcategory) => ({
+                ...(subcategory as Category),
+                subcategories: undefined,
+              })
+            ),
+          }));
 
-        const subCategories = [
-          formattedData[0].slug,
-          ...formattedData[0].subcategories.map((subcat) => subcat.slug),
-        ];
-        const category = categoryData.docs[0];
+          const subCategories = [
+            formattedData[0]?.slug,
+            ...(formattedData[0]?.subcategories.map((subcat) => subcat.slug) ??
+              []),
+          ];
 
-        if (category) {
           where["category.slug"] = {
             in: subCategories,
           };
