@@ -1,12 +1,7 @@
-import { parseAsString, useQueryStates } from "nuqs";
+import { useQueryStates } from "nuqs";
+
+import { searchParams } from "../search-params";
 
 export const useProductFilters = () => {
-  return useQueryStates({
-    minPrice: parseAsString.withOptions({
-      clearOnDefault: true,
-    }),
-    maxPrice: parseAsString.withOptions({
-      clearOnDefault: true,
-    }),
-  });
+  return useQueryStates(searchParams);
 };
