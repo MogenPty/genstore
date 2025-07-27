@@ -11,6 +11,7 @@ import { Users } from "./collections/Users";
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Products } from "./collections/Products";
+import { Tags } from "./collections/Tags";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Categories, Media, Products],
+  collections: [Users, Categories, Media, Products, Tags],
   cookiePrefix: "genstore", //default value is "payload"
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
