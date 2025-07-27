@@ -23,18 +23,16 @@ export const productsRouter = createTRPCRouter({
       let sort: Sort = "-createdAt";
 
       if (input.sort === "trending") {
-        sort = "name"; // Sort by name for trending products
+        sort = "name"; // Sort by name ascending for trending products
       }
 
       if (input.sort === "curated") {
-        sort = "+createdAt"; // Default sorting for curated products
+        sort = "+createdAt"; // Sort by creation date ascending for curated products
       }
 
       if (input.sort === "hot_and_new") {
-        sort = "-name"; // Sort by creation date for hot and new products
+        sort = "-name"; // Sort by name descending for hot and new products
       }
-
-      console.log("Sorting products by:", input.sort, sort);
 
       if (input.minPrice) {
         where.price = {

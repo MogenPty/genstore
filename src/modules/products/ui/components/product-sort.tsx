@@ -9,7 +9,7 @@ export const ProductSort = () => {
   const [filters, setFilters] = useProductFilters();
 
   return (
-    <div className="flex item-center gap-2">
+    <div className="flex items-center gap-2">
       <Button
         size="sm"
         className={cn(
