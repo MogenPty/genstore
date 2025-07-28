@@ -5,14 +5,14 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Category, Media } from "@/payload-types";
 
 import { sortValues } from "../search-params";
-import { DEFAULT_PAGE_CURSOR, DEFAULT_PAGE_LIMIT } from "@/constants";
+import { GENSTORE_PAGE_CURSOR, GENSTORE_PAGE_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
     .input(
       z.object({
-        cursor: z.number().default(DEFAULT_PAGE_CURSOR),
-        limit: z.number().default(DEFAULT_PAGE_LIMIT),
+        cursor: z.number().default(GENSTORE_PAGE_CURSOR),
+        limit: z.number().default(GENSTORE_PAGE_LIMIT),
         category: z.string().nullable().optional(),
         minPrice: z.string().nullable().optional(),
         maxPrice: z.string().nullable().optional(),

@@ -1,14 +1,14 @@
 import z from "zod";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { DEFAULT_PAGE_CURSOR, DEFAULT_PAGE_LIMIT } from "@/constants";
+import { GENSTORE_PAGE_CURSOR, GENSTORE_PAGE_LIMIT } from "@/constants";
 
 export const tagsRouter = createTRPCRouter({
   getMany: baseProcedure
     .input(
       z.object({
-        cursor: z.number().default(DEFAULT_PAGE_CURSOR),
-        limit: z.number().default(DEFAULT_PAGE_LIMIT),
+        cursor: z.number().default(GENSTORE_PAGE_CURSOR),
+        limit: z.number().default(GENSTORE_PAGE_LIMIT),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -16,6 +16,7 @@ export const tagsRouter = createTRPCRouter({
         collection: "tags",
         page: input.cursor,
         limit: input.limit,
+        sort: "name",
       });
 
       return data;

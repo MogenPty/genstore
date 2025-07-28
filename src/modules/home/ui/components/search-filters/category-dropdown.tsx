@@ -8,7 +8,6 @@ import { CategoryOutput } from "@/modules/categories/types";
 import { cn } from "@/lib/utils";
 
 import { SubcategoryMenu } from "./subcategory-menu";
-import { useDropdownPosition } from "./use-dropdown-position";
 
 interface Props {
   category: CategoryOutput;
@@ -19,8 +18,6 @@ interface Props {
 export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const categoryRef = useRef<HTMLDivElement>(null);
-  const { getDropdownPosition } = useDropdownPosition(categoryRef);
-  const dropdownPosition = getDropdownPosition();
 
   const onMouseEnter = () => {
     if (category.subcategories) {
@@ -51,7 +48,7 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
         <Button
           variant="elevated"
           className={cn(
-            "h-11 px-4 bg-transparent border-transparent hover:bg-primary hover:border-primary hover:text-primary-foreground text-secondary-foreground",
+            "h-11 px-4 bg-transparent border-transparent hover:bg-primary hover:border-primary hover:text-primary-foreground text-black",
             isActive && !isHovered && "bg-primary text-primary-foreground",
             isOpen && "bg-primary text-primary-foreground"
           )}
@@ -73,11 +70,7 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
         )}
       </div>
 
-      <SubcategoryMenu
-        category={category}
-        isOpen={isOpen}
-        position={dropdownPosition}
-      />
+      <SubcategoryMenu category={category} isOpen={isOpen} />
     </div>
   );
 };
