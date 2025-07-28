@@ -2,7 +2,7 @@ import { LoaderIcon } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { DEFAULT_PAGE_LIMIT } from "@/constants";
+import { GENSTORE_TAG_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 
 interface Props {
@@ -17,7 +17,7 @@ export const TagsFilter = ({ value, onChange }: Props) => {
     useInfiniteQuery(
       trpc.tags.getMany.infiniteQueryOptions(
         {
-          limit: DEFAULT_PAGE_LIMIT,
+          limit: GENSTORE_TAG_LIMIT,
         },
         {
           getNextPageParam: (lastPage) => {

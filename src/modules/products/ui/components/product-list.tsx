@@ -6,7 +6,7 @@ import { useTRPC } from "@/trpc/client";
 
 import { useProductFilters } from "../../hooks/use-product-filters";
 import { ProductCard, ProductCardSkeleton } from "./product-card";
-import { DEFAULT_PAGE_LIMIT } from "@/constants";
+import { GENSTORE_PAGE_LIMIT } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { InboxIcon } from "lucide-react";
 
@@ -24,7 +24,7 @@ export const ProductList = ({ category }: Props) => {
         {
           ...filters,
           category,
-          limit: DEFAULT_PAGE_LIMIT,
+          limit: GENSTORE_PAGE_LIMIT,
         },
         {
           getNextPageParam: (lastPage) => {
@@ -37,7 +37,7 @@ export const ProductList = ({ category }: Props) => {
   if (data.pages?.[0]?.docs.length === 0) {
     return (
       <div className="border border-primary border-dashed flex items-center justify-center p-8 flex-col gap-y-4 bg-white w-full">
-        <InboxIcon className="size-12 text-primary" />
+        <InboxIcon className="size-12 text-black" />
         <p className="font-medium text-base">
           No products found for this category.
         </p>
@@ -83,7 +83,7 @@ export const ProductList = ({ category }: Props) => {
 export const ProductListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-      {Array.from({ length: DEFAULT_PAGE_LIMIT }).map((_, index) => (
+      {Array.from({ length: GENSTORE_PAGE_LIMIT }).map((_, index) => (
         <ProductCardSkeleton key={index} />
       ))}
     </div>

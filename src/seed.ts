@@ -144,6 +144,16 @@ const seederCategories = [
 const seed = async () => {
   const payload = await getPayload({ config: configPromise });
 
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "info@mogen.co.za",
+      password: "admin",
+      username: "admin",
+      roles: ["super-admin"],
+    },
+  });
+
   for (const category of seederCategories) {
     let parentCategory: Category | null = null;
 
@@ -157,7 +167,7 @@ const seed = async () => {
     });
 
     if (existingCategory.docs.length > 0) {
-      parentCategory = existingCategory.docs[0];
+      parentCategory = existingCategory.docs[0]!;
       // console.log(`Found existing category: ${category.name}`);
     } else {
       console.log(`Creating category: ${category.name}`);

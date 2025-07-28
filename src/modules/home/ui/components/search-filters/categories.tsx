@@ -115,7 +115,7 @@ export const Categories = ({ data }: Props) => {
           <Button
             variant="elevated"
             className={cn(
-              "h-11 px-4 bg-transparent border-transparent hover:bg-primary hover:border-primary hover:text-primary-foreground text-secondary-foreground",
+              "h-11 px-4 bg-transparent border-transparent hover:bg-primary hover:border-primary hover:text-primary-foreground text-black",
               isActiveCategoryHidden &&
                 !isAnyHovered &&
                 "bg-primary text-primary-foreground"

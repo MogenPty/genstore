@@ -16,10 +16,6 @@ export const Products: CollectionConfig = {
       type: "text",
     },
     {
-      name: "color",
-      type: "text",
-    },
-    {
       name: "category",
       type: "relationship",
       relationTo: "categories",
@@ -41,19 +37,6 @@ export const Products: CollectionConfig = {
       type: "number",
       required: true,
     },
-    {
-      name: "slug",
-      type: "text",
-      required: true,
-      unique: true,
-      index: true,
-    },
-    // {
-    //   name: "tags",
-    //   type: "relationship",
-    //   relationTo: "tags",
-    //   hasMany: true,
-    // },
     {
       name: "refundPolicy",
       type: "select",
