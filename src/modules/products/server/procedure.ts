@@ -2,12 +2,41 @@ import type { Sort, Where } from "payload";
 import z from "zod";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category, Media, Tenant } from "@/payload-types";
+import { Category, Media, Product, Tenant } from "@/payload-types";
 
 import { sortValues } from "../search-params";
 import { GENSTORE_PAGE_CURSOR, GENSTORE_PAGE_LIMIT } from "@/constants";
+import { TRPCError } from "@trpc/server";
 
 export const productsRouter = createTRPCRouter({
+  getOne: baseProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const data = await ctx.payload.findByID({
+        collection: "products",
+        depth: 2, // Populates image and category fields
+        id: input.id,
+      });
+
+      if (!data) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found",
+        });
+      }
+      const product = data as Product & {
+        image: Media | null;
+        tenant: Tenant & {
+          logo: Media | null;
+        };
+      };
+
+      return product;
+    }),
   getMany: baseProcedure
     .input(
       z.object({
