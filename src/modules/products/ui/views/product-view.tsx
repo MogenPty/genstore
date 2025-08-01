@@ -1,16 +1,16 @@
 "use client";
 
+import { Fragment } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { LinkIcon, StarIcon } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { formatCurrency, generateTenantURL } from "@/lib/utils";
-import { useTRPC } from "@/trpc/client";
-import Link from "next/link";
-import { StarRating } from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
-import { LinkIcon, StarIcon } from "lucide-react";
-import { Fragment } from "react";
+import { formatCurrency, generateTenantURL } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import { StarRating } from "@/components/star-rating";
+import { useTRPC } from "@/trpc/client";
 
 interface Props {
   tenantSlug: string;
@@ -30,7 +30,7 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
         <div className="relative aspect-[3.9] border-b">
           <Image
             src={data.image?.url || "/placeholder.png"}
-            alt={data.name}
+            alt={data.image?.url ? data.name : "Placeholder product image"}
             fill
             className="object-cover"
           />
@@ -107,7 +107,7 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
                     variant="elevated"
                     className="size-9"
                     disabled={false}
-                    onClick={() => alert("Wishlist feature coming soon!")}
+                    onClick={() => {}}
                   >
                     <LinkIcon />
                   </Button>

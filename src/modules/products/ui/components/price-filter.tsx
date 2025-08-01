@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 
+import { formatCurrency } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -9,26 +10,6 @@ interface Props {
   onMinPriceChange?: (value: string | null) => void;
   onMaxPriceChange?: (value: string | null) => void;
 }
-
-export const formatAsCurrency = (value: string) => {
-  const numericValue = value.replace(/[^0-9.-]+/g, "");
-  const parts = numericValue.split(".");
-  const formattedValue =
-    parts[0] + (parts.length > 1 ? "." + parts[1]?.slice(0, 2) : "");
-
-  if (!formattedValue) return "";
-
-  const numberValue = parseFloat(formattedValue);
-
-  if (isNaN(numberValue)) return "";
-
-  return new Intl.NumberFormat("en-ZA", {
-    style: "currency",
-    currency: "ZAR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(numberValue);
-};
 
 export const PriceFilter = ({
   minPrice,
@@ -56,7 +37,7 @@ export const PriceFilter = ({
           id="min-price"
           type="text"
           placeholder="R0.00"
-          value={minPrice ? formatAsCurrency(minPrice) : ""}
+          value={minPrice ? formatCurrency(minPrice) : ""}
           onChange={handleMinPriceChange}
         />
       </div>
@@ -68,7 +49,7 @@ export const PriceFilter = ({
           id="max-price"
           type="text"
           placeholder="R0.00"
-          value={maxPrice ? formatAsCurrency(maxPrice) : ""}
+          value={maxPrice ? formatCurrency(maxPrice) : ""}
           onChange={handleMaxPriceChange}
         />
       </div>

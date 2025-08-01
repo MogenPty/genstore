@@ -18,7 +18,9 @@ export const StarRating = ({
   iconClassName,
   text,
 }: Props) => {
-  const safeRating = Math.max(MIN_RATING, Math.min(MAX_RATING, rating));
+  // Normalise first to ensure we always end up with a finite number
+  const normalised = Number.isFinite(rating) ? rating : MIN_RATING;
+  const safeRating = Math.max(MIN_RATING, Math.min(MAX_RATING, normalised));
 
   return (
     <div className={cn("flex items-center gap-x-1", className)}>
