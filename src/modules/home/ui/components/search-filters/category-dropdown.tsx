@@ -36,7 +36,6 @@ export const CategoryDropdown = ({ category, isActive, isHovered }: Props) => {
   };
 
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
     <div
       className="relative"
       ref={categoryRef}
