@@ -17,19 +17,14 @@ export const CheckoutButton = ({
   hideIfEmpty = true,
   className = "",
 }: Props) => {
-  const { totalItems, clearCart } = useCart(tenantSlug);
+  const { totalItems } = useCart(tenantSlug);
 
   if (hideIfEmpty && totalItems === 0) {
     return null;
   }
 
   return (
-    <Button
-      variant="elevated"
-      asChild
-      className={cn("bg-white", className)}
-      onClick={() => clearCart()}
-    >
+    <Button variant="elevated" asChild className={cn("bg-white", className)}>
       <Link href={`${generateTenantURL(tenantSlug)}/checkout`}>
         <ShoppingCartIcon /> {totalItems > 0 ? totalItems : ""}
       </Link>
