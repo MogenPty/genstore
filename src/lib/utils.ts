@@ -10,9 +10,14 @@ export function generateTenantURL(tenantSlug: string) {
 }
 
 // Re-use the formatter and perform strict numeric coercion.
-const ZAR_FORMATTER = new Intl.NumberFormat("en-ZA", {
+const ZAR_FORMATTER = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "ZAR",
+  numberingSystem: "latn",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  currencyDisplay: "narrowSymbol",
+  useGrouping: true,
 });
 
 export function formatCurrency(value: number | string): string {
