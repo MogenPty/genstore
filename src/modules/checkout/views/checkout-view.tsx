@@ -38,8 +38,6 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
     );
   }
 
-  console.log("Checkout data:", data);
-
   if (!data || data?.totalDocs === 0) {
     return (
       <div className="px-4 pt-4 lg:pt-16 lg:px-12">
