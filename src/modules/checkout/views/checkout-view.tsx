@@ -58,9 +58,10 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
 
   useEffect(() => {
     if (states.success) {
-      setStates({ success: false, cancelled: false });
+      console.log("Purchase successful");
+      // setStates({ success: false, cancelled: false });
       clearCart();
-      router.push("/products");
+      // router.push("/products");
     }
   }, [states.success, clearCart, router, setStates]);
 

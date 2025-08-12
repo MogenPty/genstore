@@ -45,7 +45,7 @@ export const SearchInput = ({ disabled }: Props) => {
           variant="elevated"
           onClick={() => setIsSidebarOpen(true)}
         >
-          <Link href="/library">
+          <Link prefetch href="/library">
             <BookmarkCheckIcon />
             <span className="lg:block hidden">Library</span>
           </Link>
