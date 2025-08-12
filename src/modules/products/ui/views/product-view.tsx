@@ -12,7 +12,6 @@ import { formatCurrency, generateTenantURL } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { StarRating } from "@/components/star-rating";
 import { useTRPC } from "@/trpc/client";
-// import { CartButton } from "../components/cart-button";
 
 const CartButton = dynamic(
   () => import("../components/cart-button").then((mod) => mod.CartButton),
@@ -114,7 +113,11 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
             <div className="border-t h-full lg:border-t-0 border-l">
               <div className="flex flex-col gap-4 p-6 border-b">
                 <div className="flex flex-row items-center gap-2">
-                  <CartButton tenantSlug={tenantSlug} productId={productId} />
+                  <CartButton
+                    tenantSlug={tenantSlug}
+                    productId={productId}
+                    isPurchased={data.isPurchased}
+                  />
                   <Button
                     variant="elevated"
                     className="size-9"

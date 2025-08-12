@@ -1,8 +1,9 @@
 import type { Sort, Where } from "payload";
 import z from "zod";
+import { headers as getHeaders } from "next/headers";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category, Media, Product, Tenant } from "@/payload-types";
+import { Category, Media, Tenant } from "@/payload-types";
 
 import { sortValues } from "../search-params";
 import { GENSTORE_PAGE_CURSOR, GENSTORE_PAGE_LIMIT } from "@/constants";
@@ -16,26 +17,48 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const data = await ctx.payload.findByID({
+      const headers = await getHeaders();
+      const session = await ctx.payload.auth({ headers });
+
+      const product = await ctx.payload.findByID({
         collection: "products",
         depth: 2, // Populates image and category fields
         id: input.id,
       });
 
-      if (!data) {
+      if (!product) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Product not found",
         });
       }
-      const product = data as Product & {
-        image: Media | null;
-        tenant: Tenant & {
-          logo: Media | null;
-        };
-      };
 
-      return product;
+      let isPurchased = false;
+
+      if (session.user) {
+        const orders = await ctx.payload.find({
+          collection: "orders",
+          pagination: false,
+          limit: 1,
+          where: {
+            and: [
+              { product: { equals: input.id } },
+              { user: { equals: session.user.id } },
+            ],
+          },
+        });
+
+        isPurchased = orders.totalDocs > 0;
+      }
+
+      return {
+        ...product,
+        isPurchased,
+        image: product.image as Media | null,
+        tenant: product.tenant as Tenant & {
+          logo: Media | null;
+        },
+      };
     }),
   getMany: baseProcedure
     .input(
