@@ -3,7 +3,7 @@
 import { InboxIcon, LoaderIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { generateTenantURL } from "@/lib/utils";
@@ -26,6 +26,7 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
     useCart(tenantSlug);
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery(
     trpc.checkout.getProducts.queryOptions({ ids: productIds })
   );
@@ -58,12 +59,19 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
 
   useEffect(() => {
     if (states.success) {
-      console.log("Purchase successful");
-      // setStates({ success: false, cancelled: false });
+      setStates({ success: false, cancelled: false });
       clearCart();
-      // router.push("/products");
+      queryClient.invalidateQueries(trpc.library.getMany.infiniteQueryFilter());
+      router.push("/library");
     }
-  }, [states.success, clearCart, router, setStates]);
+  }, [
+    clearCart,
+    queryClient,
+    router,
+    setStates,
+    states.success,
+    trpc.library.getMany,
+  ]);
 
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
