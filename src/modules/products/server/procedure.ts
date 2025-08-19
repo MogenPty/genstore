@@ -61,24 +61,19 @@ export const productsRouter = createTRPCRouter({
         reviews.docs.length === 0
           ? 0
           : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
-            reviews.totalDocs;
+            reviews.docs.length;
 
-      const ratingDistribution: Record<number, number> = {
-        5: 0,
-        4: 0,
-        3: 0,
-        2: 0,
-        1: 0,
-      };
+      // Compute rating distribution counts for ratings 1..5
+      const ratingDistribution = reviews.docs.reduce<Record<number, number>>(
+        (acc, review) => {
+          const r = Math.round(review.rating);
+          if (r >= 1 && r <= 5) acc[r] = (acc[r] || 0) + 1;
+          return acc;
+        },
+        {}
+      );
 
       if (reviews.docs.length > 0) {
-        for (const review of reviews.docs) {
-          if (review.rating < 1 || review.rating > 5) {
-            ratingDistribution[review.rating] =
-              (ratingDistribution[review.rating] || 0) + 1;
-          }
-        }
-
         Object.keys(ratingDistribution).forEach((key) => {
           const rating = Number(key);
           const count = ratingDistribution[rating] || 0;
@@ -206,12 +201,12 @@ export const productsRouter = createTRPCRouter({
 
           return {
             ...doc,
-            reviewCount: reviews.totalDocs,
+            reviewCount: reviews.docs.length,
             reviewRating:
               reviews.docs.length === 0
                 ? 0
                 : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
-                  reviews.totalDocs,
+                  reviews.docs.length,
           };
         })
       );
