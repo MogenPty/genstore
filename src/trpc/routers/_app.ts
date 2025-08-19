@@ -3,6 +3,7 @@ import { categoriesRouter } from "@/modules/categories/server/procedure";
 import { checkoutRouter } from "@/modules/checkout/server/procedure";
 import { libraryRouter } from "@/modules/library/server/procedure";
 import { productsRouter } from "@/modules/products/server/procedure";
+import { reviewsRouter } from "@/modules/reviews/server/procedures";
 import { tagsRouter } from "@/modules/tags/server/procedures";
 import { tenantsRouter } from "@/modules/tenants/server/procedure";
 
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   checkout: checkoutRouter,
   library: libraryRouter,
   products: productsRouter,
+  reviews: reviewsRouter,
   tags: tagsRouter,
   tenants: tenantsRouter,
 });
