@@ -1,10 +1,11 @@
 "use client";
 
+import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LinkIcon, StarIcon } from "lucide-react";
+import { toast } from "sonner";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,8 @@ interface Props {
 
 export const ProductView = ({ tenantSlug, productId }: Props) => {
   const trpc = useTRPC();
+
+  const [isCopied, setIsCopied] = useState(false);
 
   const { data } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId })
@@ -83,16 +86,27 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
               </div>
 
               <div className="hidden lg:flex px-6 py-4 items-center justify-center">
-                <div className="flex items-center gap-1">
-                  <StarRating rating={3} iconClassName="size-4" text="3/5" />
+                <div className="flex items-center gap-2">
+                  <StarRating
+                    rating={data.reviewsRating}
+                    iconClassName="size-4"
+                  />
+                  <p className="text-base font-medium">
+                    {data.reviewCount} ratings
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="block lg:hidden px-6 py-4 items-center justify-center border-b">
-              <div className="flex items-center gap-1">
-                <StarRating rating={3} iconClassName="size-4" />
-                <p className="text-base font-medium">{5} ratings</p>
+              <div className="flex items-center gap-2">
+                <StarRating
+                  rating={data.reviewsRating}
+                  iconClassName="size-4"
+                />
+                <p className="text-base font-medium">
+                  {data.reviewCount} ratings
+                </p>
               </div>
             </div>
 
@@ -121,10 +135,18 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
                   <Button
                     variant="elevated"
                     className="size-9"
-                    disabled={false}
-                    onClick={() => {}}
+                    disabled={isCopied}
+                    onClick={() => {
+                      setIsCopied(true);
+                      navigator.clipboard.writeText(window.location.href);
+                      toast.success("Product link copied to clipboard");
+
+                      setTimeout(() => {
+                        setIsCopied(false);
+                      }, 2000);
+                    }}
                   >
-                    <LinkIcon />
+                    {isCopied ? <CheckIcon /> : <LinkIcon />}
                   </Button>
                 </div>
 
@@ -140,8 +162,8 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
                   <h3 className="text-xl font-medium">Ratings</h3>
                   <div className="flex items-center gap-x-1 font-medium">
                     <StarIcon className="size-4 fill-black" />
-                    <p>({5})</p>
-                    <p className="text-base">{5} ratings</p>
+                    <p>({Number(data.reviewsRating).toFixed(1)})</p>
+                    <p className="text-base">{data.reviewCount} ratings</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4">
@@ -150,8 +172,13 @@ export const ProductView = ({ tenantSlug, productId }: Props) => {
                       <div className="font-medium">
                         {rating} star{rating > 1 ? "s" : ""}
                       </div>
-                      <Progress value={0} className="h-[1lh]" />
-                      <div className="text-right font-medium">{0}%</div>
+                      <Progress
+                        value={data.ratingDistribution[rating]}
+                        className="h-[1lh]"
+                      />
+                      <div className="text-right font-medium">
+                        {data.ratingDistribution[rating]}%
+                      </div>
                     </Fragment>
                   ))}
                 </div>

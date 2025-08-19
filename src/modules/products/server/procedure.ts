@@ -51,6 +51,52 @@ export const productsRouter = createTRPCRouter({
         isPurchased = orders.totalDocs > 0;
       }
 
+      const reviews = await ctx.payload.find({
+        collection: "reviews",
+        pagination: false,
+        where: { product: { equals: input.id } },
+      });
+
+      const reviewsRating =
+        reviews.docs.length === 0
+          ? 0
+          : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
+            reviews.totalDocs;
+
+      const ratingDistribution1 = reviews.docs.reduce(
+        (acc, review) => {
+          const rating = review.rating;
+          acc[rating] = (acc[rating] || 0) + 1;
+          return acc;
+        },
+        {} as Record<number, number>
+      );
+
+      const ratingDistribution: Record<number, number> = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      };
+
+      if (reviews.docs.length > 0) {
+        for (const review of reviews.docs) {
+          if (review.rating < 1 || review.rating > 5) {
+            ratingDistribution[review.rating] =
+              (ratingDistribution[review.rating] || 0) + 1;
+          }
+        }
+
+        Object.keys(ratingDistribution1).forEach((key) => {
+          const rating = Number(key);
+          const count = ratingDistribution1[rating] || 0;
+          ratingDistribution[rating] = Math.round(
+            (count / reviews.docs.length) * 100
+          );
+        });
+      }
+
       return {
         ...product,
         isPurchased,
@@ -58,6 +104,9 @@ export const productsRouter = createTRPCRouter({
         tenant: product.tenant as Tenant & {
           logo: Media | null;
         },
+        reviewsRating,
+        reviewCount: reviews.docs.length,
+        ratingDistribution,
       };
     }),
   getMany: baseProcedure
@@ -156,9 +205,29 @@ export const productsRouter = createTRPCRouter({
         limit: input.limit,
       });
 
+      const dataWithReviews = await Promise.all(
+        data.docs.map(async (doc) => {
+          const reviews = await ctx.payload.find({
+            collection: "reviews",
+            pagination: false,
+            where: { product: { equals: doc.id } },
+          });
+
+          return {
+            ...doc,
+            reviewCount: reviews.totalDocs,
+            reviewRating:
+              reviews.docs.length === 0
+                ? 0
+                : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
+                  reviews.totalDocs,
+          };
+        })
+      );
+
       return {
         ...data,
-        docs: data.docs.map((doc) => ({
+        docs: dataWithReviews.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & {
