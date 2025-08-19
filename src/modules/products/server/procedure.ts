@@ -63,15 +63,6 @@ export const productsRouter = createTRPCRouter({
           : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
             reviews.totalDocs;
 
-      const ratingDistribution1 = reviews.docs.reduce(
-        (acc, review) => {
-          const rating = review.rating;
-          acc[rating] = (acc[rating] || 0) + 1;
-          return acc;
-        },
-        {} as Record<number, number>
-      );
-
       const ratingDistribution: Record<number, number> = {
         5: 0,
         4: 0,
@@ -88,9 +79,9 @@ export const productsRouter = createTRPCRouter({
           }
         }
 
-        Object.keys(ratingDistribution1).forEach((key) => {
+        Object.keys(ratingDistribution).forEach((key) => {
           const rating = Number(key);
-          const count = ratingDistribution1[rating] || 0;
+          const count = ratingDistribution[rating] || 0;
           ratingDistribution[rating] = Math.round(
             (count / reviews.docs.length) * 100
           );
