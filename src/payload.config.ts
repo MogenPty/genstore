@@ -8,6 +8,8 @@ import path from "path";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import sharp from "sharp";
 
+import { isSuperAdmin } from "./lib/access";
+
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Orders } from "./collections/Orders";
@@ -56,8 +58,7 @@ export default buildConfig({
       tenantsArrayField: {
         includeDefaultField: false,
       },
-      userHasAccessToAllTenants: (user) =>
-        Boolean(user?.roles?.includes("super-admin")),
+      userHasAccessToAllTenants: (user) => isSuperAdmin(user),
     }),
     // storage-adapter-placeholder
   ],

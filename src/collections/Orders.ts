@@ -1,9 +1,25 @@
 import type { CollectionConfig } from "payload";
 
+import { isSuperAdmin } from "@/lib/access";
+
 export const Orders: CollectionConfig = {
   slug: "orders",
+  access: {
+    read: ({ req }) => {
+      if (isSuperAdmin(req.user)) return true;
+      // Allow authenticated users to read only their own orders
+      return {
+        user: {
+          equals: req.user?.id,
+        },
+      };
+    },
+    update: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
   admin: {
     useAsTitle: "name",
+    hidden: ({ user }) => !isSuperAdmin(user),
   },
   fields: [
     {
@@ -29,16 +45,9 @@ export const Orders: CollectionConfig = {
       name: "stripeSessionId",
       type: "text",
       required: true,
-    },
-    {
-      name: "status",
-      type: "select",
-      options: [
-        { label: "Pending", value: "pending" },
-        { label: "Shipped", value: "shipped" },
-        { label: "Delivered", value: "delivered" },
-      ],
-      required: true,
+      admin: {
+        description: "Stripe Checkout Session associated with the order.",
+      },
     },
   ],
 };

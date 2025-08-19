@@ -1,26 +1,48 @@
 import type { CollectionConfig } from "payload";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
 
+import { isSuperAdmin } from "@/lib/access";
+
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: "tenants",
   tenantsCollectionSlug: "tenants",
   tenantsArrayTenantFieldName: "tenant",
   arrayFieldAccess: {
-    create: () => true,
     read: () => true,
-    update: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
   tenantFieldAccess: {
-    create: () => true,
     read: () => true,
-    update: () => true,
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
 });
 
 export const Users: CollectionConfig = {
   slug: "users",
+  access: {
+    read: ({ req }) => {
+      if (isSuperAdmin(req.user)) return true;
+      if (!req.user) return false; // no public read access
+      // Allow users to read only their own document
+      return {
+        id: {
+          equals: req.user.id,
+        },
+      };
+    },
+    create: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req, id }) => {
+      if (isSuperAdmin(req.user)) return true;
+
+      return req.user?.id === id; // Allow users to update their own profile
+    },
+  },
   admin: {
     useAsTitle: "email",
+    hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: true,
   fields: [
@@ -33,6 +55,11 @@ export const Users: CollectionConfig = {
     {
       admin: {
         position: "sidebar",
+      },
+      access: {
+        read: () => true,
+        create: ({ req }) => isSuperAdmin(req.user),
+        update: ({ req }) => isSuperAdmin(req.user),
       },
       name: "roles",
       type: "select",

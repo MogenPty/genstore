@@ -172,7 +172,7 @@ export interface Tenant {
    */
   name: string;
   /**
-   * The slug of the store that will be used in the URL. It should be unique. e.g. 'https://slug.genstore.com'.
+   * The slug of the store that will be used in the URL. It should be unique. e.g. 'https://YourSlug.genstore.com'.
    */
   slug: string;
   /**
@@ -185,7 +185,7 @@ export interface Tenant {
    */
   stripeAccountId: string;
   /**
-   * Whether the store is active and can be used by users. If false, the store will not be accessible.
+   * Whether the store is active and accessible by users. If false, the store will not be accessible.
    */
   isActive?: boolean | null;
   /**
@@ -241,8 +241,10 @@ export interface Order {
   name: string;
   user: string | User;
   product: string | Product;
+  /**
+   * Stripe Checkout Session associated with the order.
+   */
   stripeSessionId: string;
-  status: 'pending' | 'shipped' | 'delivered';
   updatedAt: string;
   createdAt: string;
 }
@@ -260,6 +262,10 @@ export interface Product {
   image?: (string | null) | Media;
   price: number;
   refundPolicy?: ('30-days' | '14-days' | '7-days' | '3-days' | '1-day' | 'no-refund') | null;
+  /**
+   * Protected Content only visible to customers after purchase. Add product documentation, downloadable files, getting started guides, Coupon ID, etc. Supports Markdown formatting.
+   */
+  content?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -438,7 +444,6 @@ export interface OrdersSelect<T extends boolean = true> {
   user?: T;
   product?: T;
   stripeSessionId?: T;
-  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -455,6 +460,7 @@ export interface ProductsSelect<T extends boolean = true> {
   image?: T;
   price?: T;
   refundPolicy?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }
