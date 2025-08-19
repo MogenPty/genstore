@@ -22,7 +22,16 @@ const defaultTenantArrayField = tenantsArrayField({
 export const Users: CollectionConfig = {
   slug: "users",
   access: {
-    read: () => true,
+    read: ({ req }) => {
+      if (isSuperAdmin(req.user)) return true;
+      if (!req.user) return false; // no public read access
+      // Allow users to read only their own document
+      return {
+        id: {
+          equals: req.user.id,
+        },
+      };
+    },
     create: ({ req }) => isSuperAdmin(req.user),
     delete: ({ req }) => isSuperAdmin(req.user),
     update: ({ req, id }) => {

@@ -5,7 +5,15 @@ import { isSuperAdmin } from "@/lib/access";
 export const Orders: CollectionConfig = {
   slug: "orders",
   access: {
-    read: () => true,
+    read: ({ req }) => {
+      if (isSuperAdmin(req.user)) return true;
+      // Allow authenticated users to read only their own orders
+      return {
+        user: {
+          equals: req.user?.id,
+        },
+      };
+    },
     update: ({ req }) => isSuperAdmin(req.user),
     delete: ({ req }) => isSuperAdmin(req.user),
   },
