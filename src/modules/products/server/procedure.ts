@@ -51,6 +51,38 @@ export const productsRouter = createTRPCRouter({
         isPurchased = orders.totalDocs > 0;
       }
 
+      const reviews = await ctx.payload.find({
+        collection: "reviews",
+        pagination: false,
+        where: { product: { equals: input.id } },
+      });
+
+      const reviewsRating =
+        reviews.docs.length === 0
+          ? 0
+          : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
+            reviews.docs.length;
+
+      // Compute rating distribution counts for ratings 1..5
+      const ratingDistribution = reviews.docs.reduce<Record<number, number>>(
+        (acc, review) => {
+          const r = Math.round(review.rating);
+          if (r >= 1 && r <= 5) acc[r] = (acc[r] || 0) + 1;
+          return acc;
+        },
+        {}
+      );
+
+      if (reviews.docs.length > 0) {
+        Object.keys(ratingDistribution).forEach((key) => {
+          const rating = Number(key);
+          const count = ratingDistribution[rating] || 0;
+          ratingDistribution[rating] = Math.round(
+            (count / reviews.docs.length) * 100
+          );
+        });
+      }
+
       return {
         ...product,
         isPurchased,
@@ -58,6 +90,9 @@ export const productsRouter = createTRPCRouter({
         tenant: product.tenant as Tenant & {
           logo: Media | null;
         },
+        reviewsRating,
+        reviewCount: reviews.docs.length,
+        ratingDistribution,
       };
     }),
   getMany: baseProcedure
@@ -156,9 +191,29 @@ export const productsRouter = createTRPCRouter({
         limit: input.limit,
       });
 
+      const dataWithReviews = await Promise.all(
+        data.docs.map(async (doc) => {
+          const reviews = await ctx.payload.find({
+            collection: "reviews",
+            pagination: false,
+            where: { product: { equals: doc.id } },
+          });
+
+          return {
+            ...doc,
+            reviewCount: reviews.docs.length,
+            reviewRating:
+              reviews.docs.length === 0
+                ? 0
+                : reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
+                  reviews.docs.length,
+          };
+        })
+      );
+
       return {
         ...data,
-        docs: data.docs.map((doc) => ({
+        docs: dataWithReviews.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & {

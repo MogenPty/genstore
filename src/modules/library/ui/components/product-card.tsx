@@ -50,7 +50,7 @@ export const ProductCard = ({
             <div className="flex items-center gap-1">
               <StarIcon className="size-3.5 fill-primary" />
               <p className="text-sm font-medium">
-                {reviewRating} ({reviewCount})
+                {Number(reviewRating).toFixed(1)} ({reviewCount})
               </p>
             </div>
           )}
