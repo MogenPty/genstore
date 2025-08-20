@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
   //   ];
   // },
   allowedDevOrigins: ["http://localhost:3000", "*.genstore.local:3000"],
+  images: {
+    domains: ["images.unsplash.com"],
+  },
 };
 
 export default withPayload(nextConfig);
