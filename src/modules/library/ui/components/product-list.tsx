@@ -8,6 +8,7 @@ import { ProductCard, ProductCardSkeleton } from "./product-card";
 import { GENSTORE_PAGE_LIMIT } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { InboxIcon } from "lucide-react";
+import { SystemMessage } from "@/components/system-message";
 
 export const ProductList = () => {
   const trpc = useTRPC();
@@ -27,12 +28,10 @@ export const ProductList = () => {
 
   if (data.pages?.[0]?.docs.length === 0) {
     return (
-      <div className="border border-primary border-dashed flex items-center justify-center p-8 flex-col gap-y-4 bg-white w-full">
-        <InboxIcon className="size-12 text-black" />
-        <p className="font-medium text-base">
-          No products found for this category.
-        </p>
-      </div>
+      <SystemMessage
+        Icon={InboxIcon}
+        message="No products found for this category."
+      />
     );
   }
 

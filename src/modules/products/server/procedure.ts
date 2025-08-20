@@ -36,6 +36,13 @@ export const productsRouter = createTRPCRouter({
         });
       }
 
+      if (product.isArchived) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found",
+        });
+      }
+
       let isPurchased = false;
 
       if (session.user) {
@@ -112,7 +119,11 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const where: Where = {};
+      const where: Where = {
+        isArchived: {
+          not_equals: true,
+        },
+      };
 
       let sort: Sort = "-createdAt";
 
@@ -144,6 +155,10 @@ export const productsRouter = createTRPCRouter({
       if (input.tenantSlug) {
         where["tenant.slug"] = {
           equals: input.tenantSlug,
+        };
+      } else {
+        where.isPrivate = {
+          not_equals: true,
         };
       }
 
