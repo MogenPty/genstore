@@ -59,7 +59,6 @@ export const Tenants: CollectionConfig = {
         description: "The Stripe account ID associated with the store.",
       },
       access: {
-        read: ({ req }) => isSuperAdmin(req.user),
         update: ({ req }) => isSuperAdmin(req.user),
       },
     },
