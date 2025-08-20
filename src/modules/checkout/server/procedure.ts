@@ -12,6 +12,7 @@ import { TRPCError } from "@trpc/server";
 
 import { CheckoutMetadata, ProductMetadata } from "../types";
 import { GENSTORE_PLATFORM_FEE_PERCENT } from "@/constants";
+import { generateTenantURL } from "@/lib/utils";
 
 export const checkoutRouter = createTRPCRouter({
   verify: protectedProcedure.mutation(async ({ ctx }) => {
@@ -82,6 +83,11 @@ export const checkoutRouter = createTRPCRouter({
             {
               "tenant.slug": {
                 equals: tenantSlug,
+              },
+            },
+            {
+              isArchived: {
+                not_equals: true,
               },
             },
           ],
@@ -155,8 +161,8 @@ export const checkoutRouter = createTRPCRouter({
       const checkout = await stripe.checkout.sessions.create(
         {
           customer_email: ctx.session.user.email,
-          success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenant.slug}/checkout?cancel=true`,
+          success_url: `${generateTenantURL(tenant.slug)}/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${generateTenantURL(tenant.slug)}/checkout?cancel=true`,
           line_items: lineItems,
           mode: "payment",
           invoice_creation: {
@@ -197,9 +203,18 @@ export const checkoutRouter = createTRPCRouter({
         collection: "products",
         depth: 2, // Populates image and category fields
         where: {
-          id: {
-            in: input.ids,
-          },
+          and: [
+            {
+              id: {
+                in: input.ids,
+              },
+            },
+            {
+              isArchived: {
+                not_equals: true,
+              },
+            },
+          ],
         },
       });
 
