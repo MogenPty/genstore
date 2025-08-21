@@ -94,8 +94,6 @@ export const checkoutRouter = createTRPCRouter({
         },
       });
 
-      console.log("🚀 ~ products:", products);
-
       if (!products || products.totalDocs !== productIds.length) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -150,8 +148,6 @@ export const checkoutRouter = createTRPCRouter({
           },
         }));
 
-      console.info("Line items:", lineItems);
-
       const totalAmount = products.docs.reduce(
         (total, item) => total + item.price * 100,
         0
@@ -182,8 +178,6 @@ export const checkoutRouter = createTRPCRouter({
           stripeAccount: tenant.stripeAccountId,
         }
       );
-
-      console.info("Checkout session created:", checkout);
 
       if (!checkout.url) {
         throw new TRPCError({

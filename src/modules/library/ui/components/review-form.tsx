@@ -74,8 +74,6 @@ const ReviewForm = ({ initialData, productId }: Props) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
     if (initialData) {
       updateReview.mutate({
         reviewId: initialData.id,

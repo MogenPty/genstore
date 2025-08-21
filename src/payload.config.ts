@@ -7,6 +7,7 @@ import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import path from "path";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import sharp from "sharp";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
 import { isSuperAdmin } from "./lib/access";
 
@@ -64,6 +65,13 @@ export default buildConfig({
       },
       userHasAccessToAllTenants: (user) => isSuperAdmin(user),
     }),
-    // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: true,
+      clientUploads: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
   ],
 });
