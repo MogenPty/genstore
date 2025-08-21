@@ -3,23 +3,37 @@
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/client";
 
 import { CategoriesSidebar } from "./categories-sidebar";
+import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 
 interface Props {
   disabled?: boolean;
 }
 
 export const SearchInput = ({ disabled }: Props) => {
+  const [filters, setFilters] = useProductFilters();
+  const [searchValue, setSearchValue] = useState(filters.search);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());
+
+  //simple debounce for searchValue
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setFilters({ search: searchValue });
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue, setFilters]);
 
   return (
     <div className="flex items-center gap-2 w-full">
@@ -30,6 +44,8 @@ export const SearchInput = ({ disabled }: Props) => {
           className="pl-8"
           placeholder="Search Products"
           disabled={disabled}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
       <Button
