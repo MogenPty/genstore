@@ -7,9 +7,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export function generateTenantURL(tenantSlug: string) {
   const isDevelopment = process.env.NODE_ENV === "development";
-  const isSubdomainEnabled = Boolean(process.env.NEXT_PUBLIC_SUBDOMAIN_ENABLED);
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN?.trim();
+  const isSubdomainEnabled = ["1", "true", "yes", "on"].includes(
+    (process.env.NEXT_PUBLIC_SUBDOMAIN_ENABLED ?? "").toLowerCase()
+  );
 
-  if (!isSubdomainEnabled) {
+  if (!isSubdomainEnabled || !rootDomain) {
     return `/tenants/${tenantSlug}`;
   }
 
