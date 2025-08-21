@@ -1,6 +1,6 @@
 "use client";
 
-import ContactPage from "./(app)/(home)/contact/page";
+import ContactPage from "./(app)/(public)/contact/page";
 
 export default function PreviewContactPage() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import FeaturesPage from "./(app)/(home)/features/page";
+import FeaturesPage from "./(app)/(public)/features/page";
 
 export default function PreviewFeaturesPage() {
   return (

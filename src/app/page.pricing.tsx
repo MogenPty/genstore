@@ -1,6 +1,6 @@
 "use client";
 
-import PricingPage from "./(app)/(home)/pricing/page";
+import PricingPage from "./(app)/(public)/pricing/page";
 
 export default function PreviewPricingPage() {
   return (

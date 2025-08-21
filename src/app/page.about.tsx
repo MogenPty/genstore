@@ -1,6 +1,6 @@
 "use client";
 
-import AboutPage from "./(app)/(home)/about/page";
+import AboutPage from "./(app)/(public)/about/page";
 
 export default function PreviewAboutPage() {
   return (
