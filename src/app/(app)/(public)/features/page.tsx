@@ -1,39 +1,78 @@
 "use client";
 
 import Image from "next/image";
-import { Zap, ShieldCheck, Rocket, Users, CheckCircle, ArrowRight, Star } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Zap,
+  ShieldCheck,
+  Rocket,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  Star,
+} from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 const features = [
   {
     icon: Zap,
     title: "Lightning Fast Performance",
-    description: "Experience blazing fast load times and seamless interactions with our optimized infrastructure.",
-    benefits: ["99.9% uptime guarantee", "Sub-second response times", "Global CDN network"]
+    description:
+      "Experience blazing fast load times and seamless interactions with our optimized infrastructure.",
+    benefits: [
+      "99.9% uptime guarantee",
+      "Sub-second response times",
+      "Global CDN network",
+    ],
   },
   {
     icon: ShieldCheck,
     title: "Enterprise Security",
-    description: "Bank-level security with end-to-end encryption and advanced threat protection.",
-    benefits: ["256-bit SSL encryption", "SOC 2 Type II compliant", "Regular security audits"]
+    description:
+      "Bank-level security with end-to-end encryption and advanced threat protection.",
+    benefits: [
+      "256-bit SSL encryption",
+      "SOC 2 Type II compliant",
+      "Regular security audits",
+    ],
   },
   {
     icon: Rocket,
     title: "Rapid Deployment",
-    description: "Get up and running in minutes with our streamlined onboarding process.",
-    benefits: ["One-click setup", "Pre-built templates", "Migration assistance"]
+    description:
+      "Get up and running in minutes with our streamlined onboarding process.",
+    benefits: [
+      "One-click setup",
+      "Pre-built templates",
+      "Migration assistance",
+    ],
   },
   {
     icon: Users,
     title: "Team Collaboration",
-    description: "Work together seamlessly with real-time collaboration tools and shared workspaces.",
-    benefits: ["Real-time editing", "Role-based permissions", "Activity tracking"]
-  }
+    description:
+      "Work together seamlessly with real-time collaboration tools and shared workspaces.",
+    benefits: [
+      "Real-time editing",
+      "Role-based permissions",
+      "Activity tracking",
+    ],
+  },
 ];
 
 const pricingFeatures = [
@@ -42,26 +81,30 @@ const pricingFeatures = [
   "Priority support",
   "Custom integrations",
   "White-label options",
-  "API access"
+  "API access",
 ];
 
 const faqs = [
   {
     question: "How quickly can I get started?",
-    answer: "You can be up and running in under 5 minutes. Our streamlined onboarding process guides you through account setup, and you'll have access to all features immediately."
+    answer:
+      "You can be up and running in under 5 minutes. Our streamlined onboarding process guides you through account setup, and you'll have access to all features immediately.",
   },
   {
     question: "Is my data secure?",
-    answer: "Absolutely. We use bank-level 256-bit SSL encryption, maintain SOC 2 Type II compliance, and conduct regular security audits to ensure your data is always protected."
+    answer:
+      "Absolutely. We use bank-level 256-bit SSL encryption, maintain SOC 2 Type II compliance, and conduct regular security audits to ensure your data is always protected.",
   },
   {
     question: "Can I integrate with existing tools?",
-    answer: "Yes! We offer extensive API access and pre-built integrations with popular tools. Our team can also help with custom integrations for enterprise clients."
+    answer:
+      "Yes! We offer extensive API access and pre-built integrations with popular tools. Our team can also help with custom integrations for enterprise clients.",
   },
   {
     question: "What kind of support do you provide?",
-    answer: "We provide 24/7 priority support for all users, including live chat, email support, and dedicated account managers for enterprise clients."
-  }
+    answer:
+      "We provide 24/7 priority support for all users, including live chat, email support, and dedicated account managers for enterprise clients.",
+  },
 ];
 
 export default function FeaturesPage() {
@@ -82,7 +125,9 @@ export default function FeaturesPage() {
                   <span className="text-primary"> Modern Teams</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Discover the tools and capabilities that make our platform the perfect choice for teams who want to build, scale, and succeed together.
+                  Discover the tools and capabilities that make our platform the
+                  perfect choice for teams who want to build, scale, and succeed
+                  together.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -120,7 +165,8 @@ export default function FeaturesPage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our comprehensive feature set is designed to help teams of all sizes achieve their goals faster and more efficiently.
+              Our comprehensive feature set is designed to help teams of all
+              sizes achieve their goals faster and more efficiently.
             </p>
           </div>
 
@@ -128,7 +174,10 @@ export default function FeaturesPage() {
             {features.map((feature, index) => {
               const IconComponent = feature.icon;
               return (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <Card
+                  key={`feature-${index}`}
+                  className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
                   <CardHeader>
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                       <IconComponent className="w-6 h-6 text-primary" />
@@ -141,7 +190,10 @@ export default function FeaturesPage() {
                   <CardContent>
                     <ul className="space-y-2">
                       {feature.benefits.map((benefit, benefitIndex) => (
-                        <li key={benefitIndex} className="flex items-center text-sm text-muted-foreground">
+                        <li
+                          key={`feature-benefit-${benefitIndex}`}
+                          className="flex items-center text-sm text-muted-foreground"
+                        >
                           <CheckCircle className="w-4 h-4 text-primary mr-2 flex-shrink-0" />
                           {benefit}
                         </li>
@@ -165,7 +217,8 @@ export default function FeaturesPage() {
               Explore Our Capabilities
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Dive deeper into the features that make our platform stand out from the competition.
+              Dive deeper into the features that make our platform stand out
+              from the competition.
             </p>
           </div>
 
@@ -184,11 +237,21 @@ export default function FeaturesPage() {
                     Data-Driven Insights
                   </h3>
                   <p className="text-lg text-muted-foreground">
-                    Make informed decisions with comprehensive analytics and reporting tools. Track performance, identify trends, and optimize your workflows with real-time data visualization.
+                    Make informed decisions with comprehensive analytics and
+                    reporting tools. Track performance, identify trends, and
+                    optimize your workflows with real-time data visualization.
                   </p>
                   <ul className="space-y-3">
-                    {["Real-time dashboards", "Custom reports", "Performance metrics", "Trend analysis"].map((item, index) => (
-                      <li key={index} className="flex items-center">
+                    {[
+                      "Real-time dashboards",
+                      "Custom reports",
+                      "Performance metrics",
+                      "Trend analysis",
+                    ].map((item, index) => (
+                      <li
+                        key={`feature-analytics-${index}`}
+                        className="flex items-center"
+                      >
                         <CheckCircle className="w-5 h-5 text-primary mr-3" />
                         <span className="text-foreground">{item}</span>
                       </li>
@@ -218,11 +281,21 @@ export default function FeaturesPage() {
                     Streamline Your Workflow
                   </h3>
                   <p className="text-lg text-muted-foreground">
-                    Automate repetitive tasks and focus on what matters most. Our intelligent automation tools help you save time and reduce errors while maintaining quality.
+                    Automate repetitive tasks and focus on what matters most.
+                    Our intelligent automation tools help you save time and
+                    reduce errors while maintaining quality.
                   </p>
                   <ul className="space-y-3">
-                    {["Workflow automation", "Smart triggers", "Batch processing", "Error handling"].map((item, index) => (
-                      <li key={index} className="flex items-center">
+                    {[
+                      "Workflow automation",
+                      "Smart triggers",
+                      "Batch processing",
+                      "Error handling",
+                    ].map((item, index) => (
+                      <li
+                        key={`feature-automation-${index}`}
+                        className="flex items-center"
+                      >
                         <CheckCircle className="w-5 h-5 text-primary mr-3" />
                         <span className="text-foreground">{item}</span>
                       </li>
@@ -236,7 +309,9 @@ export default function FeaturesPage() {
                   <div className="text-center space-y-4">
                     <Rocket className="w-16 h-16 text-primary mx-auto" />
                     <h4 className="text-xl font-semibold">Automation Ready</h4>
-                    <p className="text-muted-foreground">Set up automated workflows in minutes</p>
+                    <p className="text-muted-foreground">
+                      Set up automated workflows in minutes
+                    </p>
                   </div>
                 </div>
               </div>
@@ -250,11 +325,21 @@ export default function FeaturesPage() {
                     Connect Everything
                   </h3>
                   <p className="text-lg text-muted-foreground">
-                    Integrate with your favorite tools and services. Our extensive API and pre-built connectors make it easy to create a unified workflow across all your platforms.
+                    Integrate with your favorite tools and services. Our
+                    extensive API and pre-built connectors make it easy to
+                    create a unified workflow across all your platforms.
                   </p>
                   <ul className="space-y-3">
-                    {["REST API access", "Webhook support", "Pre-built connectors", "Custom integrations"].map((item, index) => (
-                      <li key={index} className="flex items-center">
+                    {[
+                      "REST API access",
+                      "Webhook support",
+                      "Pre-built connectors",
+                      "Custom integrations",
+                    ].map((item, index) => (
+                      <li
+                        key={`feature-integration-${index}`}
+                        className="flex items-center"
+                      >
                         <CheckCircle className="w-5 h-5 text-primary mr-3" />
                         <span className="text-foreground">{item}</span>
                       </li>
@@ -268,7 +353,9 @@ export default function FeaturesPage() {
                   <div className="text-center space-y-4">
                     <Users className="w-16 h-16 text-primary mx-auto" />
                     <h4 className="text-xl font-semibold">100+ Integrations</h4>
-                    <p className="text-muted-foreground">Connect with tools you already use</p>
+                    <p className="text-muted-foreground">
+                      Connect with tools you already use
+                    </p>
                   </div>
                 </div>
               </div>
@@ -287,7 +374,8 @@ export default function FeaturesPage() {
               Everything Included
             </h2>
             <p className="text-xl text-muted-foreground">
-              No hidden fees, no feature limitations. Get access to everything you need to succeed.
+              No hidden fees, no feature limitations. Get access to everything
+              you need to succeed.
             </p>
           </div>
 
@@ -301,9 +389,14 @@ export default function FeaturesPage() {
             <CardContent>
               <div className="grid md:grid-cols-2 gap-6">
                 {pricingFeatures.map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-3">
+                  <div
+                    key={`pricing-feature-${index}`}
+                    className="flex items-center space-x-3"
+                  >
                     <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-foreground font-medium">{feature}</span>
+                    <span className="text-foreground font-medium">
+                      {feature}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -327,13 +420,18 @@ export default function FeaturesPage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-muted-foreground">
-              Get answers to common questions about our features and capabilities.
+              Get answers to common questions about our features and
+              capabilities.
             </p>
           </div>
 
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-6">
+              <AccordionItem
+                key={index}
+                value={`faq-item-${index}`}
+                className="border rounded-lg px-6"
+              >
                 <AccordionTrigger className="text-left font-semibold">
                   {faq.question}
                 </AccordionTrigger>
@@ -355,7 +453,8 @@ export default function FeaturesPage() {
                 Ready to Get Started?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of teams who are already using our platform to build amazing products and grow their businesses.
+                Join thousands of teams who are already using our platform to
+                build amazing products and grow their businesses.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="elevated" className="px-8">

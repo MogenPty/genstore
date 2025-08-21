@@ -2,14 +2,35 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  CheckCircle,
+  MessageSquare,
+} from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useForm } from "react-hook-form";
 
@@ -19,22 +40,22 @@ const offices = [
     address: "123 Innovation Drive, Suite 400",
     zipCode: "San Francisco, CA 94105",
     phone: "+1 (555) 123-4567",
-    email: "sf@genstore.com"
+    email: "sf@genstore.com",
   },
   {
     city: "New York",
     address: "456 Business Avenue, Floor 12",
     zipCode: "New York, NY 10001",
     phone: "+1 (555) 987-6543",
-    email: "ny@genstore.com"
+    email: "ny@genstore.com",
   },
   {
     city: "London",
     address: "789 Tech Street, Level 8",
     zipCode: "London, UK EC2A 4DP",
     phone: "+44 20 1234 5678",
-    email: "london@genstore.com"
-  }
+    email: "london@genstore.com",
+  },
 ];
 
 const contactMethods = [
@@ -43,22 +64,22 @@ const contactMethods = [
     title: "Live Chat",
     description: "Chat with our support team in real-time",
     action: "Start Chat",
-    available: "Available 24/7"
+    available: "Available 24/7",
   },
   {
     icon: Mail,
     title: "Email Support",
     description: "Send us an email and we'll respond within 24 hours",
     action: "Send Email",
-    available: "Response within 24h"
+    available: "Response within 24h",
   },
   {
     icon: Phone,
     title: "Phone Support",
     description: "Speak directly with our support specialists",
     action: "Call Now",
-    available: "Mon-Fri 9AM-6PM PST"
-  }
+    available: "Mon-Fri 9AM-6PM PST",
+  },
 ];
 
 interface ContactFormData {
@@ -72,7 +93,7 @@ interface ContactFormData {
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
+
   const form = useForm<ContactFormData>({
     defaultValues: {
       firstName: "",
@@ -80,8 +101,8 @@ export default function ContactPage() {
       email: "",
       company: "",
       subject: "",
-      message: ""
-    }
+      message: "",
+    },
   });
 
   const onSubmit = (data: ContactFormData) => {
@@ -89,7 +110,7 @@ export default function ContactPage() {
     console.log("Form submitted:", data);
     setIsSubmitted(true);
     form.reset();
-    
+
     // Reset success message after 5 seconds
     setTimeout(() => {
       setIsSubmitted(false);
@@ -109,11 +130,12 @@ export default function ContactPage() {
                   Get in Touch
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-                  We'd Love to
+                  We&rsquo;d Love to
                   <span className="text-primary"> Hear From You</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Have questions about our platform? Need help getting started? Our team is here to help you succeed.
+                  Have questions about our platform? Need help getting started?
+                  Our team is here to help you succeed.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -122,8 +144,12 @@ export default function ContactPage() {
                     <Clock className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium text-foreground">Quick Response</div>
-                    <div className="text-sm text-muted-foreground">Within 24 hours</div>
+                    <div className="font-medium text-foreground">
+                      Quick Response
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Within 24 hours
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -131,8 +157,12 @@ export default function ContactPage() {
                     <CheckCircle className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <div className="font-medium text-foreground">Expert Support</div>
-                    <div className="text-sm text-muted-foreground">Dedicated team</div>
+                    <div className="font-medium text-foreground">
+                      Expert Support
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Dedicated team
+                    </div>
                   </div>
                 </div>
               </div>
@@ -168,7 +198,10 @@ export default function ContactPage() {
             {contactMethods.map((method, index) => {
               const IconComponent = method.icon;
               return (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <Card
+                  key={`contact-method-${index}`}
+                  className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
                   <CardHeader className="text-center">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
                       <IconComponent className="w-8 h-8 text-primary" />
@@ -179,7 +212,9 @@ export default function ContactPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="text-center space-y-4">
-                    <div className="text-sm text-muted-foreground">{method.available}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {method.available}
+                    </div>
                     <Button variant="outline" className="w-full">
                       {method.action}
                     </Button>
@@ -201,7 +236,8 @@ export default function ContactPage() {
               Send Us a Message
             </h2>
             <p className="text-xl text-muted-foreground">
-              Fill out the form below and we'll get back to you as soon as possible
+              Fill out the form below and we&rsquo;ll get back to you as soon as
+              possible
             </p>
           </div>
 
@@ -212,13 +248,17 @@ export default function ContactPage() {
                   <CheckCircle className="h-4 w-4" />
                   <AlertTitle>Message Sent Successfully!</AlertTitle>
                   <AlertDescription>
-                    Thank you for contacting us. We'll get back to you within 24 hours.
+                    Thank you for contacting us. We&rsquo;ll get back to you
+                    within 24 hours.
                   </AlertDescription>
                 </Alert>
               )}
 
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
                   <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -254,18 +294,22 @@ export default function ContactPage() {
                     <FormField
                       control={form.control}
                       name="email"
-                      rules={{ 
+                      rules={{
                         required: "Email is required",
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address"
-                        }
+                          message: "Invalid email address",
+                        },
                       }}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} />
+                            <Input
+                              type="email"
+                              placeholder="john@example.com"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -294,7 +338,10 @@ export default function ContactPage() {
                       <FormItem>
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
-                          <Input placeholder="How can we help you?" {...field} />
+                          <Input
+                            placeholder="How can we help you?"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -309,10 +356,10 @@ export default function ContactPage() {
                       <FormItem>
                         <FormLabel>Message</FormLabel>
                         <FormControl>
-                          <Textarea 
+                          <Textarea
                             placeholder="Tell us more about your inquiry..."
                             className="min-h-32"
-                            {...field} 
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -320,7 +367,12 @@ export default function ContactPage() {
                     )}
                   />
 
-                  <Button type="submit" size="lg" variant="elevated" className="w-full group">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    variant="elevated"
+                    className="w-full group"
+                  >
                     <Send className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
                     Send Message
                   </Button>
@@ -347,7 +399,10 @@ export default function ContactPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {offices.map((office, index) => (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300">
+              <Card
+                key={`office-${index}`}
+                className="hover:shadow-lg transition-all duration-300"
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <MapPin className="w-5 h-5 text-primary mr-2" />
@@ -356,8 +411,12 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">{office.address}</p>
-                    <p className="text-sm text-muted-foreground">{office.zipCode}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {office.address}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {office.zipCode}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
@@ -388,7 +447,8 @@ export default function ContactPage() {
                 Ready to Get Started?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Don't wait - join thousands of teams who are already using our platform to achieve their goals.
+                Don&rsquo;t wait - join thousands of teams who are already using
+                our platform to achieve their goals.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="elevated" className="px-8">

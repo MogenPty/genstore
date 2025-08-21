@@ -184,7 +184,7 @@ export default function PricingPage() {
           <div className="grid lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
               <Card
-                key={index}
+                key={`plan-${index}`}
                 className={`relative ${plan.popular ? "ring-2 ring-primary shadow-xl scale-105" : ""} hover:shadow-lg transition-all duration-300`}
               >
                 {plan.popular && (
@@ -213,7 +213,10 @@ export default function PricingPage() {
                 <CardContent className="space-y-4">
                   <ul className="space-y-3">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center">
+                      <li
+                        key={`feature-${featureIndex}`}
+                        className="flex items-center"
+                      >
                         {feature.included ? (
                           <CheckCircle className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
                         ) : (
@@ -259,7 +262,7 @@ export default function PricingPage() {
               const IconComponent = feature.icon;
               return (
                 <Card
-                  key={index}
+                  key={`feature-${index}`}
                   className="text-center p-8 hover:shadow-lg transition-all duration-300"
                 >
                   <CardContent className="space-y-4">
@@ -297,7 +300,7 @@ export default function PricingPage() {
           <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
               <Card
-                key={index}
+                key={`testimonial-${index}`}
                 className="p-8 hover:shadow-lg transition-all duration-300"
               >
                 <CardContent className="space-y-6">
@@ -344,7 +347,7 @@ export default function PricingPage() {
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem
-                key={index}
+                key={`faq-${index}`}
                 value={`item-${index}`}
                 className="border rounded-lg px-6"
               >

@@ -6,15 +6,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateTenantURL(tenantSlug: string) {
-  if (process.env.NODE_ENV === "development") {
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const isSubdomainEnabled = Boolean(process.env.NEXT_PUBLIC_SUBDOMAIN_ENABLED);
+
+  if (!isSubdomainEnabled) {
     return `/tenants/${tenantSlug}`;
   }
 
-  const protocol = "https://";
+  let protocol = "https://";
 
-  // if (process.env.NODE_ENV === "development") {
-  //   protocol = "http://";
-  // }
+  if (isDevelopment) {
+    protocol = "http://";
+  }
 
   return `${protocol}${tenantSlug}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`; // Use the public root domain
 }
