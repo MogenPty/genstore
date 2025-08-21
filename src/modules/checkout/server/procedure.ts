@@ -135,7 +135,7 @@ export const checkoutRouter = createTRPCRouter({
         products.docs.map((product) => ({
           quantity: 1,
           price_data: {
-            currency: "zar",
+            currency: "ZAR",
             product_data: {
               name: product.name,
               metadata: {
@@ -149,6 +149,8 @@ export const checkoutRouter = createTRPCRouter({
             unit_amount: product.price * 100, // Convert to cents
           },
         }));
+
+      console.info("Line items:", lineItems);
 
       const totalAmount = products.docs.reduce(
         (total, item) => total + item.price * 100,
@@ -180,6 +182,8 @@ export const checkoutRouter = createTRPCRouter({
           stripeAccount: tenant.stripeAccountId,
         }
       );
+
+      console.info("Checkout session created:", checkout);
 
       if (!checkout.url) {
         throw new TRPCError({

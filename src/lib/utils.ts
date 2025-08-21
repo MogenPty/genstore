@@ -13,7 +13,7 @@ export function generateTenantURL(tenantSlug: string) {
   );
 
   if (!isSubdomainEnabled || !rootDomain) {
-    return `/tenants/${tenantSlug}`;
+    return `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenantSlug}`;
   }
 
   let protocol = "https://";
