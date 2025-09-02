@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -29,7 +28,6 @@ export default function RootLayout({
           <TRPCReactProvider>
             {children}
             <Toaster />
-            <Analytics />
           </TRPCReactProvider>
         </NuqsAdapter>
       </body>
