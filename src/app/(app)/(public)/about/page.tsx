@@ -8,10 +8,12 @@ import {
   Zap,
   CheckCircle,
   ArrowRight,
-  Linkedin,
-  Twitter,
-  Github,
 } from "lucide-react";
+import {
+ FaLinkedin,
+ FaXTwitter,
+ FaGithub,
+} from "react-icons/fa6";
 import {
   Card,
   CardHeader,
