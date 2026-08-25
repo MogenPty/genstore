@@ -8,10 +8,12 @@ import {
   Zap,
   CheckCircle,
   ArrowRight,
-  Linkedin,
-  Twitter,
-  Github,
 } from "lucide-react";
+import {
+ FaLinkedin,
+ FaXTwitter,
+ FaGithub,
+} from "react-icons/fa6";
 import {
   Card,
   CardHeader,
@@ -319,17 +321,17 @@ export default function AboutPage() {
                   <div className="flex justify-center space-x-3">
                     {member.social.linkedin && (
                       <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Linkedin className="h-4 w-4" />
+                        <FaLinkedin className="h-4 w-4" />
                       </Button>
                     )}
                     {member.social.twitter && (
                       <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Twitter className="h-4 w-4" />
+                        <FaXTwitter className="h-4 w-4" />
                       </Button>
                     )}
                     {member.social.github && (
                       <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Github className="h-4 w-4" />
+                        <FaGithub className="h-4 w-4" />
                       </Button>
                     )}
                   </div>
